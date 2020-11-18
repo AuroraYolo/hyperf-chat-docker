@@ -64,7 +64,7 @@ RUN cd /tmp \
 RUN cd /tmp \
     && curl -SL "https://github.com/alanxz/rabbitmq-c/archive/v0.10.0.tar.gz" -o amqp.tar.gz \
     && mkdir -p amqp \
-    && tar -xf amqp.tar.gz - C amqp --strip-components=1 \
+    && tar -xf amqp.tar.gz -C amqp --strip-components=1 \
     && cd amqp \
     && mkdir build && cd build \
     && cmake .. \
