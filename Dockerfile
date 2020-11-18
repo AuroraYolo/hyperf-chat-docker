@@ -76,7 +76,7 @@ RUN cd /tmp \
     && make \
     && make install \
     && echo "extension=amqp.so" > /etc/php7/conf.d/amqp.ini
-     php info
+    ## php info
 RUN php -v \
     && php -m \
     && php --ri swoole \
