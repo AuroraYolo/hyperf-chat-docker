@@ -35,7 +35,7 @@ RUN set -ex \
 # php extension:swoole
     && cd /tmp \
     && mkdir -p swoole \
-    && tar -zxvf swoole.tar.gz -C swoole --strip-components=1 \
+    && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
     && ln -s /usr/bin/phpize7 /usr/local/bin/phpize \
     && ln -s /usr/bin/php-config7 /usr/local/bin/php-config \
     && ( \
@@ -62,16 +62,16 @@ RUN cd /tmp \
     && echo "extension=redis.so" > /etc/php7/conf.d/redis.ini
 
 RUN cd /tmp \
-    && curl -Sl https://github.com/alanxz/rabbitmq-c/archive/${AMQP_VERSION}.tar.gz -o amqp.tar.gz \
+    && curl -Sl "https://github.com/alanxz/rabbitmq-c/archive/${AMQP_VERSION}.tar.gz" -o amqp.tar.gz \
     && mkdir -p amqp \
-    && tar -zxvf amqp.tar.gz - C amqp --strip-components=1 \
+    && tar -xf amqp.tar.gz - C amqp --strip-components=1 \
     && cd amqp \
     && mkdir build && cd build \
     && cmake .. \
     && cmake --build . --target install
 RUN cd /tmp \
     && wget https://pecl.php.net/get/amqp-1.10.2.tgz \
-    && tar -zxvf amqp-1.10.2.tgz \
+    && tar -xf amqp-1.10.2.tgz \
     && cd amqp-1.10.2 \
     && phpize \
     && ./configure --with-librabbitmq-dir=/usr/local \
