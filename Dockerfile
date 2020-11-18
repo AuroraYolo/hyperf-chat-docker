@@ -11,15 +11,17 @@ LABEL maintainer="Hyperf Developers group@hyperf.io" version="1.0" license="MIT"
 
 ARG SW_VERSION
 ARG COMPOSER_VERSION
+ARG AMQP_VERSION
 
 ##
 # ---------- env settings ----------
 ##
 ENV SW_VERSION=${SW_VERSION:-"v4.5.7"} \
     COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.2"} \
+    AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
     PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake librdkafka-dev protobuf"
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # update
 RUN set -ex \
     && apk update \
@@ -28,7 +30,7 @@ RUN set -ex \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libaio-dev openssl-dev \
 # download
     && cd /tmp \
-    && curl -SL "https://gitee.com/swoole/swoole/repository/archive/${SW_VERSION}?format=tar.gz" -o swoole.tar.gz \
+    && curl -SL "https://github.com/swoole/swoole-src/archive/${SW_VERSION}.tar.gz" -o swoole.tar.gz \
     && ls -alh \
 # php extension:swoole
     && cd /tmp \
@@ -60,7 +62,7 @@ RUN cd /tmp \
     && echo "extension=redis.so" > /etc/php7/conf.d/redis.ini
 
 RUN cd /tmp \
-    && curl -Sl https://github.com/alanxz/rabbitmq-c/archive/v0.10.0.tar.gz -o amqp.tar.gz \
+    && curl -Sl https://github.com/alanxz/rabbitmq-c/archive/${AMQP_VERSION}.tar.gz -o amqp.tar.gz \
     && mkdir -p amqp \
     && tar -zxvf amqp.tar.gz - C amqp --strip-components=1 \
     && cd amqp \
