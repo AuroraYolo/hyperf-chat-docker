@@ -62,7 +62,7 @@ RUN cd /tmp \
     && echo "extension=redis.so" > /etc/php7/conf.d/redis.ini
 
 RUN cd /tmp \
-    && curl -SL "https://github.com/alanxz/rabbitmq-c/archive/${AMQP_VERSION}.tar.gz" -o amqp.tar.gz \
+    && curl -SL "https://github.com/alanxz/rabbitmq-c/archive/v0.10.0.tar.gz" -o amqp.tar.gz \
     && mkdir -p amqp \
     && tar -xf amqp.tar.gz - C amqp --strip-components=1 \
     && cd amqp \
