@@ -20,13 +20,13 @@ ENV SW_VERSION=${SW_VERSION:-"v4.5.7"} \
     COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.2"} \
     AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
-    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake librdkafka-dev protobuf"
+    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake  librdkafka-dev protobuf"
 #RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # update
 RUN set -ex \
     && apk update \
     # for swoole extension libaio linux-headers
-    && apk add --no-cache libstdc++ openssl git bash wget \
+    && apk add --no-cache libstdc++ openssl git bash wget cmake\
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libaio-dev openssl-dev \
 # download
     && cd /tmp \
