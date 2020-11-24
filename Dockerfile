@@ -62,7 +62,7 @@ RUN apk add --no-cache protobuf \
     && cd /tmp \
     && pecl install protobuf \
     && echo "extension=protobuf.so" > /etc/php7/conf.d/protobuf.ini
-RUN apk add --no-cache rabbitmq-c-dev \
+RUN apk add --no-cache rabbitmq-c-dev rabbitmq-c \
     && cd /tmp \
     && pecl install amqp \
     && echo "extension=amqp.so" > /etc/php7/conf.d/amqp.ini
