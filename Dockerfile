@@ -64,13 +64,7 @@ RUN apk add --no-cache protobuf \
     && echo "extension=protobuf.so" > /etc/php7/conf.d/protobuf.ini
 RUN apk add --no-cache rabbitmq-c \
     && cd /tmp \
-    && wget https://pecl.php.net/get/amqp-1.10.2.tgz \
-    && tar -xf amqp-1.10.2.tgz \
-    && cd amqp-1.10.2 \
-    && phpize \
-    && ./configure --with-librabbitmq-dir=/usr/local/ \
-    && make \
-    && make install \
+    && pecl install amqp \
     && echo "extension=amqp.so" > /etc/php7/conf.d/amqp.ini
     ## php info
 RUN php -v \
