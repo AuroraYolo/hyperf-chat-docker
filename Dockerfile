@@ -16,11 +16,11 @@ ARG AMQP_VERSION
 ##
 # ---------- env settings ----------
 ##
-ENV SW_VERSION=${SW_VERSION:-"v4.5.7"} \
+ENV SW_VERSION=${SW_VERSION:-"v4.5.8"} \
     COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.2"} \
     AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
-    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake  librdkafka-dev protobuf"
+    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake"
 #RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # update
 RUN set -ex \
@@ -52,16 +52,10 @@ RUN set -ex \
     && wget -nv -O /usr/local/bin/composer https://github.com/composer/composer/releases/download/${COMPOSER_VERSION}/composer.phar \
     && chmod u+x /usr/local/bin/composer
 RUN cd /tmp \
-    && pecl install rdkafka \
-    && echo "extension=rdkafka.so" > /etc/php7/conf.d/rdkafka.ini
-RUN cd /tmp \
-    && pecl install protobuf \
-    && echo "extension=protobuf.so" > /etc/php7/conf.d/protobuf.ini \
-    && cd /tmp \
     && pecl install redis \
     && echo "extension=redis.so" > /etc/php7/conf.d/redis.ini
 
-RUN cd /tmp \
+RUN cd /usr/local \
     && curl -SL "https://github.com/alanxz/rabbitmq-c/archive/v0.10.0.tar.gz" -o amqp.tar.gz \
     && mkdir -p amqp \
     && tar -xf amqp.tar.gz -C amqp --strip-components=1 \
@@ -74,7 +68,7 @@ RUN cd /tmp \
     && tar -xf amqp-1.10.2.tgz \
     && cd amqp-1.10.2 \
     && phpize \
-    && ./configure --with-librabbitmq-dir=/usr/local \
+    && ./configure --with-librabbitmq-dir=/usr/local/amqp \
     && make \
     && make install \
     && echo "extension=amqp.so" > /etc/php7/conf.d/amqp.ini
@@ -85,5 +79,19 @@ RUN php -v \
     && composer \
     # ---------- clear works ----------
     && apk del .build-deps \
-    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
+    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
+RUN apk add --no-cache librdkafka-dev \
+    && cd /tmp \
+    && pecl install rdkafka \
+    && echo "extension=rdkafka.so" > /etc/php7/conf.d/rdkafka.ini
+RUN apk add --no-cache protobuf \
+    && cd /tmp \
+    && pecl install protobuf \
+    && echo "extension=protobuf.so" > /etc/php7/conf.d/protobuf.ini
+RUN php -v \
+    && php -m \
+    && php --ri amqp \
+    && php --ri  rdkafka \
+    && php --ri  protobuf \
+    && composer
