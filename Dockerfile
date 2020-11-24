@@ -54,17 +54,6 @@ RUN set -ex \
 RUN cd /tmp \
     && pecl install redis \
     && echo "extension=redis.so" > /etc/php7/conf.d/redis.ini
-
-
-    ## php info
-RUN php -v \
-    && php -m \
-    && php --ri swoole \
-    && composer \
-    # ---------- clear works ----------
-    && apk del .build-deps \
-    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
-    && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 RUN apk add --no-cache librdkafka-dev \
     && cd /tmp \
     && pecl install rdkafka \
@@ -83,9 +72,16 @@ RUN apk add --no-cache rabbitmq-c \
     && make \
     && make install \
     && echo "extension=amqp.so" > /etc/php7/conf.d/amqp.ini
+    ## php info
 RUN php -v \
     && php -m \
+    && php --ri swoole \
     && php --ri amqp \
     && php --ri  rdkafka \
     && php --ri  protobuf \
-    && composer
+    && composer \
+    # ---------- clear works ----------
+    && apk del .build-deps \
+    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
+    && echo -e "\033[42;37m Build Completed :).\033[0m\n"
+
