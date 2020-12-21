@@ -16,7 +16,7 @@ ARG AMQP_VERSION
 ##
 # ---------- env settings ----------
 ##
-ENV SW_VERSION=${SW_VERSION:-"v4.5.8"} \
+ENV SW_VERSION=${SW_VERSION:-"v4.5.9"} \
     COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.2"} \
     AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
