@@ -20,7 +20,7 @@ ENV SW_VERSION=${SW_VERSION:-"v4.6.1"} \
     COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.8"} \
     AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
-    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake"
+    PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev curl-dev  libtool automake"
 #RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # update
 RUN set -ex \
