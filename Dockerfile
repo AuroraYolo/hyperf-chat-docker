@@ -16,8 +16,8 @@ ARG AMQP_VERSION
 ##
 # ---------- env settings ----------
 ##
-ENV SW_VERSION=${SW_VERSION:-"v4.5.10"} \
-    COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.2"} \
+ENV SW_VERSION=${SW_VERSION:-"v4.6.1"} \
+    COMPOSER_VERSION=${COMPOSER_VERSION:-"2.0.8"} \
     AMQP_VERSION=${AMQP_VERSION:-"v0.10.0"} \
     #  install and remove building packages
     PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake"
@@ -41,7 +41,7 @@ RUN set -ex \
     && ( \
        cd swoole \
        && phpize \
-       && ./configure --enable-mysqlnd --enable-openssl --enable-http2 \
+       && ./configure --enable-mysqlnd --enable-openssl --enable-http2 --enable-swoole-json --enable-swoole-curl --enable-thread-context \
        && make -s -j$(nproc) && make install \
       ) \
     && echo "memory_limit=1G" > /etc/php7/conf.d/00_default.ini \
